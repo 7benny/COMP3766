@@ -7,10 +7,10 @@ from tf.transformations import quaternion_from_matrix
 
 # Global constants for the goal pose (students should modify these values)
 # GOAL_POSITION = np.array([-0.15, 0.429+0.429, 0.0]) # Modify these values 
-GOAL_POSITION = np.array([0.4, 0.4, 0.0]) # Modify these values 
+GOAL_POSITION = np.array([0.3, 0.3, 0.2]) # Modify these values 
 GOAL_ROTATION_MATRIX = np.array([
-    [1.0, 0.0, 0.0],  # Modify these values
-    [0.0, 1.0, 0.0],
+    [0.707, -0.707, 0.0],  # Modify these values
+    [0.707, 0.707, 0.0],
     [0.0, 0.0, 1.0]
 ])
 

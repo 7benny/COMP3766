@@ -25,11 +25,61 @@ def compute_ik(position, orientation):
     # Insert you code here
     
     # Comment this line when you have your solution
-    theta1, theta2, theta3, theta4, theta5, theta6 = [0.0] * 6
+    px, py, pz = position
 
-    joint_positions = np.array([theta1, theta2, theta3, theta4, theta5, theta6])
+    # Step 1: Calculate theta1 (shoulder rotation)
+    r = np.sqrt(px**2 + py**2)
+    phi = np.arctan2(py, px)
+    alpha = np.arctan2(d1, np.sqrt(r**2 - d1**2))
+    theta1 = phi - alpha  # Righty solution (add π for lefty)
 
-    return joint_positions
+    # Step 2: Calculate theta3 (elbow joint)
+    r_sq = px**2 + py**2 + pz**2 - d1**2
+    D = (r_sq - a2**2 - a3**2) / (2 * a2 * a3)
+    D = np.clip(D, -1.0, 1.0)  # Ensure D is within valid range for arccos
+    theta3 = np.arccos(D)
+
+    # Step 3: Calculate theta2 (shoulder joint)
+    s = pz - d1
+    phi = np.arctan2(s, r)
+    psi = np.arctan2(a3 * np.sin(theta3), a2 + a3 * np.cos(theta3))
+    theta2 = phi - psi
+
+    # Step 4: Calculate wrist joint angles (theta4, theta5, theta6)
+    def Rz(t):
+        return np.array([
+            [np.cos(t), -np.sin(t), 0],
+            [np.sin(t),  np.cos(t), 0],
+            [0,          0,         1]
+        ])
+
+    def Ry(t):
+        return np.array([
+            [np.cos(t),  0, np.sin(t)],
+            [0,          1,         0],
+            [-np.sin(t), 0, np.cos(t)]
+        ])
+
+    # Compute R_03 (rotation matrix for first three joints)
+    R_03 = Rz(theta1) @ Ry(theta2) @ Rz(theta3)
+
+    # Compute R_36 (rotation matrix for wrist joints)
+    R_36 = R_03.T @ orientation
+    # Extract theta5 (ZYX Euler angle beta)
+    cos_theta5 = R_36[2, 2]
+    cos_theta5 = np.clip(cos_theta5, -1.0, 1.0)
+    theta5 = np.arccos(cos_theta5)
+
+    # Handle singularities for theta4 and theta6
+    sin_theta5 = np.sqrt(1.0 - cos_theta5**2)
+    if abs(sin_theta5) < 1e-6:
+        theta4 = 0.0
+        theta6 = np.arctan2(R_36[1, 0], R_36[0, 0])
+    else:
+        theta4 = np.arctan2(R_36[1, 2], R_36[0, 2])
+        theta6 = np.arctan2(R_36[2, 1], -R_36[2, 0])
+
+    return np.array([theta1, theta2, theta3, theta4, theta5, theta6])
 
 def pose_callback(msg):
     """
