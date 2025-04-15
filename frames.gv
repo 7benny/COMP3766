@@ -1,0 +1,17 @@
+digraph G {
+"base_link" -> "torso"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10000.000 Hz\nMost recent transform: 0.000 ( 1744307868.499 sec old)\nBuffer length: 0.000 sec\n"];
+"left_upper_arm" -> "left_lower_arm"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"left_shoulder_yaw" -> "left_upper_arm"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"torso" -> "left_upper_leg"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"left_upper_leg" -> "left_lower_leg"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"torso" -> "left_shoulder_yaw"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"right_upper_arm" -> "right_lower_arm"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"right_shoulder_yaw" -> "right_upper_arm"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"torso" -> "right_upper_leg"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"right_upper_leg" -> "right_lower_leg"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+"torso" -> "right_shoulder_yaw"[label="Broadcaster: /robot_state_publisher\nAverage rate: 10.204 Hz\nMost recent transform: 1744307868.489 ( 0.010 sec old)\nBuffer length: 4.900 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1744307868.499"[ shape=plaintext ] ;
+ }->"base_link";
+}

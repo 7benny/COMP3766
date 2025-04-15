@@ -1,0 +1,28 @@
+<launch>
+  <!-- Load URDF from file -->
+  <param name="robot_description" textfile="$(find my_humanoid_robot)/urdf/my_humanoid_robot.urdf" />
+
+  <!-- Start Robot State Publisher -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+
+  <!-- Start Joint State Publisher for other joints (not controlled by IK) -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" output="screen">
+    <param name="use_gui" value="false"/>
+    <rosparam param="source_list">["/joint_states"]</rosparam>
+    <rosparam param="zeros">
+      left_hip: 0.0
+      left_knee: 0.0
+      right_hip: 0.0
+      right_knee: 0.0
+    </rosparam>
+  </node>
+
+  <!-- Start Inverse Kinematics Node -->
+  <node name="ik_solver_node" pkg="my_humanoid_robot" type="inverse_kinematics.py" output="screen"/>
+
+  <!-- Start Pick-and-Drop Task Node -->
+  <node name="pick_and_drop_node" pkg="my_humanoid_robot" type="pick_and_drop.py" output="screen"/>
+
+  <!-- Start RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_humanoid_robot)/config/my_humanoid_robot_config.rviz" output="screen"/>
+</launch>
